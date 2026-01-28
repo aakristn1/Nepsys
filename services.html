@@ -22,11 +22,7 @@
   <nav class="navbar" id="navbar">
     <div class="container navbar-container">
       <a href="index.html" class="navbar-logo">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="40" height="40" rx="8" fill="#e63946"/>
-          <path d="M12 28V12h4l6 10 6-10h4v16h-4V18l-4 7h-4l-4-7v10h-4z" fill="white"/>
-        </svg>
-        Nepsys
+        <img src="assets/logo-icon.png" alt="Nepsys Technologies" style="height: 45px; width: auto;">
       </a>
 
       <div class="navbar-nav" id="navbarNav">
@@ -50,494 +46,395 @@
   <header class="page-header">
     <div class="container">
       <h1>Our Services</h1>
-      <p>Simple, transparent, fast. We solve real tech problems for homes and small businesses in Sydney.</p>
+      <p>Simple solutions for your tech problems. Choose what fits you best.</p>
     </div>
   </header>
 
-  <!-- Device Setup & Management -->
-  <section class="section" id="device-setup">
+  <!-- Services Selector -->
+  <section class="section">
     <div class="container">
-      <div class="service-category">
-        <div class="service-category-header">
-          <h3>Device Setup & Management</h3>
-          <p>Getting your devices working the way they should.</p>
+      <div style="text-align: center; margin-bottom: 48px;">
+        <div style="display: inline-flex; background: var(--color-gray-100); border-radius: 8px; padding: 8px; gap: 8px;">
+          <button class="service-toggle active" id="toggleIndividual" onclick="showIndividual()" style="background: white; border: none; padding: 12px 32px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 1rem;">
+            For Individuals
+          </button>
+          <button class="service-toggle" id="toggleEnterprise" onclick="showEnterprise()" style="background: transparent; border: none; padding: 12px 32px; border-radius: 6px; font-weight: 600; cursor: pointer; color: var(--color-gray-600); font-size: 1rem;">
+            For Businesses
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDIVIDUAL SERVICES VIEW -->
+  <div id="individualView" style="display: block;">
+
+    <!-- Device Setup & Management -->
+    <section class="section section-gray" id="device-setup">
+      <div class="container">
+        <div style="margin-bottom: 40px;">
+          <h2 style="margin-bottom: 12px;">Device Setup & Management</h2>
+          <p style="font-size: 1.125rem; color: var(--color-gray-600);">Phones, laptops, tablets. We get them working the way you want.</p>
         </div>
 
         <div class="services-grid">
           <div class="service-card">
-            <div class="service-card-header">
-              <h4>New Phone, Laptop or Tablet Setup</h4>
-              <span class="service-card-badge">On-site / Remote</span>
-            </div>
-            <p>Unboxing is one thing. Actually using it is another. We set it up right.</p>
+            <h3>New Phone or Laptop Setup</h3>
+            <p>Fresh out of the box? We set it up for you — accounts, apps, photos, everything.</p>
             <ul>
-              <li>Device activation & account login</li>
-              <li>Essential app installation</li>
-              <li>Photos, documents, and backup transfer</li>
-              <li>Wi-Fi and sync configuration</li>
+              <li>Account setup (Apple ID, Google, Microsoft)</li>
+              <li>Data transfer from your old device</li>
+              <li>Essential apps installed and configured</li>
+              <li>Wi-Fi and backups configured</li>
               <li>One-hour walkthrough included</li>
             </ul>
-            <a href="book.html?service=device-setup" class="btn btn-primary btn-full">Book Device Setup</a>
+            <a href="book.html?service=device-setup" class="btn btn-primary btn-full">Book Setup</a>
           </div>
 
-          <div class="service-card" id="data-transfer">
-            <div class="service-card-header">
-              <h4>Data Transfer (Old Device to New)</h4>
-              <span class="service-card-badge">On-site / Remote</span>
-            </div>
-            <p>Moving to a new phone or laptop? We transfer your life over, not just files.</p>
+          <div class="service-card">
+            <h3>Data Transfer (Old to New)</h3>
+            <p>Moving to a new device? We transfer everything safely — photos, emails, documents, apps.</p>
             <ul>
-              <li>Photos, videos, documents</li>
-              <li>Email and account data</li>
-              <li>App data and settings</li>
-              <li>Clean-up of old device (optional)</li>
+              <li>Photos, videos, documents transfer</li>
+              <li>Email and contacts migration</li>
+              <li>App data and settings preservation</li>
+              <li>Optional: clean up old device</li>
             </ul>
             <a href="book.html?service=data-transfer" class="btn btn-primary btn-full">Schedule Transfer</a>
           </div>
 
-          <div class="service-card" id="email">
-            <div class="service-card-header">
-              <h4>Email, iCloud & Google Account Setup</h4>
-              <span class="service-card-badge remote">Remote Available</span>
-            </div>
-            <p>Email won't load? Apple ID locked? Google account issues? We fix it.</p>
+          <div class="service-card">
+            <h3>Email & Account Recovery</h3>
+            <p>Locked out of your email? Apple ID problems? We recover your access.</p>
             <ul>
-              <li>Account recovery & password reset</li>
-              <li>Multi-device synchronization</li>
+              <li>Apple ID, Gmail, Outlook recovery</li>
+              <li>Password resets and 2FA setup</li>
               <li>Backup configuration</li>
-              <li>2FA/MFA setup for security</li>
+              <li>Account synchronisation across devices</li>
             </ul>
             <a href="book.html?service=account-recovery" class="btn btn-primary btn-full">Get Account Help</a>
           </div>
 
           <div class="service-card">
-            <div class="service-card-header">
-              <h4>App Installation & Configuration</h4>
-              <span class="service-card-badge remote">Remote Available</span>
-            </div>
-            <p>Apps confuse you? Or just won't install? We sort it.</p>
+            <h3>Device Resets & Clean Installs</h3>
+            <p>Device sluggish? Running slow? We do a fresh install and restore your data.</p>
             <ul>
-              <li>Safe app download from official stores</li>
-              <li>Setup and first-use walkthrough</li>
-              <li>Subscription or payment management</li>
-              <li>Permissions and privacy explained</li>
+              <li>Full backup before reset</li>
+              <li>Factory reset or clean Windows/macOS install</li>
+              <li>Essential apps reinstalled</li>
+              <li>Data restored and verified</li>
             </ul>
-            <a href="book.html?service=apps" class="btn btn-primary btn-full">Book App Setup</a>
+            <a href="book.html?service=reset" class="btn btn-primary btn-full">Schedule Reset</a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Network & Smart Home -->
-  <section class="section section-gray" id="wifi">
-    <div class="container">
-      <div class="service-category">
-        <div class="service-category-header">
-          <h3>Network & Smart Home</h3>
-          <p>Getting connected. Properly.</p>
+    <!-- Network & Smart Home -->
+    <section class="section" id="network">
+      <div class="container">
+        <div style="margin-bottom: 40px;">
+          <h2 style="margin-bottom: 12px;">Network & Smart Home</h2>
+          <p style="font-size: 1.125rem; color: var(--color-gray-600);">Wi-Fi, printers, smart TVs, streaming — everything connected.</p>
         </div>
 
         <div class="services-grid">
-          <div class="service-card" id="printers">
-            <div class="service-card-header">
-              <h4>Printer Setup & Troubleshooting</h4>
-              <span class="service-card-badge">On-site Only</span>
-            </div>
-            <p>Printer angry at you? We make them friends again.</p>
+          <div class="service-card">
+            <h3>Wi-Fi Troubleshooting & Speed</h3>
+            <p>Slow internet? Drops out constantly? We diagnose and fix it.</p>
             <ul>
-              <li>Wi-Fi and USB connection options</li>
-              <li>Driver installation and setup</li>
-              <li>Test print and troubleshooting</li>
+              <li>Network speed testing</li>
+              <li>Router positioning and settings</li>
+              <li>Channel and frequency optimisation</li>
+              <li>Device connection troubleshooting</li>
+            </ul>
+            <a href="book.html?service=wifi" class="btn btn-primary btn-full">Fix My Wi-Fi</a>
+          </div>
+
+          <div class="service-card">
+            <h3>Printer Setup & Troubleshooting</h3>
+            <p>Printer won't work? We set it up or get it working again.</p>
+            <ul>
+              <li>Wi-Fi and USB connection setup</li>
+              <li>Driver installation</li>
               <li>Mobile printing configuration</li>
+              <li>Troubleshooting and test print</li>
             </ul>
             <a href="book.html?service=printer" class="btn btn-primary btn-full">Fix My Printer</a>
           </div>
 
           <div class="service-card">
-            <div class="service-card-header">
-              <h4>Wi-Fi Troubleshooting & Optimisation</h4>
-              <span class="service-card-badge">On-site Only</span>
-            </div>
-            <p>Slow, dropping out, unreliable? We diagnose and fix.</p>
+            <h3>Smart TV & Streaming Setup</h3>
+            <p>Want to stream? We get Netflix, Disney+, Stan and everything else working.</p>
             <ul>
-              <li>Network speed testing</li>
-              <li>Router positioning and settings</li>
-              <li>Channel and frequency optimisation</li>
-              <li>Device disconnection diagnosis</li>
-            </ul>
-            <a href="book.html?service=wifi" class="btn btn-primary btn-full">Optimise My Wi-Fi</a>
-          </div>
-
-          <div class="service-card" id="smart-tv">
-            <div class="service-card-header">
-              <h4>Smart TV & Streaming Setup</h4>
-              <span class="service-card-badge">On-site / Remote</span>
-            </div>
-            <p>Netflix ready? App won't load? Remote lost? We get you streaming.</p>
-            <ul>
-              <li>Smart TV account setup (Netflix, Stan, Disney+, etc.)</li>
+              <li>Account setup (Netflix, Stan, Disney+, etc.)</li>
               <li>Remote pairing and configuration</li>
-              <li>Network troubleshooting</li>
               <li>Cast and Airplay setup</li>
+              <li>Network troubleshooting for streaming</li>
             </ul>
-            <a href="book.html?service=smart-tv" class="btn btn-primary btn-full">Book Streaming Setup</a>
+            <a href="book.html?service=smart-tv" class="btn btn-primary btn-full">Set Up Streaming</a>
           </div>
 
           <div class="service-card">
-            <div class="service-card-header">
-              <h4>Device Factory Resets & Clean Installs</h4>
-              <span class="service-card-badge">On-site / Remote</span>
-            </div>
-            <p>Phone sluggish? Laptop slow? We start fresh.</p>
+            <h3>Basic Smart Home Setup</h3>
+            <p>Smart lights, locks, plugs? We set them up and get them talking to each other.</p>
             <ul>
-              <li>Full backup before reset</li>
-              <li>Factory reset or clean Windows/macOS install</li>
-              <li>Essential app reinstall</li>
-              <li>Data restoration and recovery</li>
+              <li>Device pairing and network setup</li>
+              <li>App configuration and basic automation</li>
+              <li>Voice assistant integration (optional)</li>
+              <li>User training and walkthrough</li>
             </ul>
-            <a href="book.html?service=reset" class="btn btn-primary btn-full">Schedule a Reset</a>
+            <a href="book.html?service=smart-home" class="btn btn-primary btn-full">Set Up Smart Home</a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Cybersecurity -->
-  <section class="section" id="security">
-    <div class="container">
-      <div class="service-category">
-        <div class="service-category-header">
-          <h3>Cybersecurity & Protection</h3>
-          <p>Basic security that works. Easy, not scary.</p>
+    <!-- Cybersecurity & Protection -->
+    <section class="section section-gray" id="cybersecurity">
+      <div class="container">
+        <div style="margin-bottom: 40px;">
+          <h2 style="margin-bottom: 12px;">Cybersecurity & Protection</h2>
+          <p style="font-size: 1.125rem; color: var(--color-gray-600);">Real protection from real threats. No jargon, just peace of mind.</p>
         </div>
 
         <div class="services-grid">
           <div class="service-card">
-            <div class="service-card-header">
-              <h4>Antivirus & Anti-Malware Setup</h4>
-              <span class="service-card-badge remote">Remote Available</span>
-            </div>
-            <p>Real protection from real threats. No jargon.</p>
+            <h3>Antivirus & Anti-Malware Setup</h3>
+            <p>We set up real protection against viruses and malware. Automatic updates included.</p>
             <ul>
               <li>Industry-trusted antivirus installation</li>
-              <li>Automatic updates and scans</li>
-              <li>Malware detection and removal</li>
-              <li>Explanation of what it does and why</li>
+              <li>Automatic scans and updates</li>
+              <li>Existing malware removal</li>
+              <li>Explanation of how it protects you</li>
             </ul>
             <a href="book.html?service=antivirus" class="btn btn-primary btn-full">Set Up Antivirus</a>
           </div>
 
           <div class="service-card">
-            <div class="service-card-header">
-              <h4>Firewall & Router Security Checks</h4>
-              <span class="service-card-badge">On-site Only</span>
-            </div>
-            <p>Your router is your first line of defence. Let's make sure it's solid.</p>
+            <h3>Password & 2FA Security</h3>
+            <p>Strong passwords and 2FA protect what matters. We set them up on your important accounts.</p>
+            <ul>
+              <li>Password strength audit and setup</li>
+              <li>Password manager installation</li>
+              <li>2FA/MFA on email and banking</li>
+              <li>Recovery codes and backup methods</li>
+            </ul>
+            <a href="book.html?service=password-security" class="btn btn-primary btn-full">Enable Security</a>
+          </div>
+
+          <div class="service-card">
+            <h3>Router & Network Security</h3>
+            <p>Your router is your home's security gate. We make sure it's locked down.</p>
             <ul>
               <li>Router password and settings audit</li>
               <li>Default settings hardening</li>
-              <li>Network privacy setup</li>
-              <li>Device access permissions</li>
+              <li>Network privacy and access control</li>
+              <li>Wi-Fi security configuration</li>
             </ul>
-            <a href="book.html?service=router-security" class="btn btn-primary btn-full">Audit Router Security</a>
+            <a href="book.html?service=router-security" class="btn btn-primary btn-full">Audit Router</a>
           </div>
 
           <div class="service-card">
-            <div class="service-card-header">
-              <h4>Password Hygiene Audit</h4>
-              <span class="service-card-badge remote">Remote Available</span>
-            </div>
-            <p>Strong passwords are boring but important. We make it manageable.</p>
-            <ul>
-              <li>Password strength review</li>
-              <li>Password manager setup and training</li>
-              <li>Password reset for weak accounts</li>
-              <li>Recovery options (2FA, backup codes)</li>
-            </ul>
-            <a href="book.html?service=password-audit" class="btn btn-primary btn-full">Book Password Audit</a>
-          </div>
-
-          <div class="service-card">
-            <div class="service-card-header">
-              <h4>Multi-Factor Authentication (2FA/MFA)</h4>
-              <span class="service-card-badge remote">Remote Available</span>
-            </div>
-            <p>2FA adds a real security layer. We set it up on what matters most.</p>
-            <ul>
-              <li>2FA setup on email (Gmail, Outlook, Apple ID)</li>
-              <li>Bank and financial account protection</li>
-              <li>Authenticator app setup and training</li>
-              <li>Backup codes and recovery</li>
-            </ul>
-            <a href="book.html?service=2fa" class="btn btn-primary btn-full">Enable 2FA</a>
-          </div>
-
-          <div class="service-card">
-            <div class="service-card-header">
-              <h4>Scam & Phishing Education</h4>
-              <span class="service-card-badge remote">Remote Available</span>
-            </div>
-            <p>Know what to watch for. We show you real examples and red flags.</p>
+            <h3>Scam & Phishing Education</h3>
+            <p>Learn to spot the red flags. We show you real scam examples and how to stay safe.</p>
             <ul>
               <li>Common scam types and tactics</li>
               <li>How to spot phishing emails</li>
-              <li>What to do if you think you're targeted</li>
+              <li>What to do if you're targeted</li>
               <li>Reporting and recovery steps</li>
             </ul>
-            <a href="book.html?service=scam-education" class="btn btn-primary btn-full">Book Scam Education</a>
+            <a href="book.html?service=scam-education" class="btn btn-primary btn-full">Book Education</a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Website Services -->
-  <section class="section section-gray" id="websites">
-    <div class="container">
-      <div class="service-category">
-        <div class="service-category-header">
-          <h3>Website & Digital Services</h3>
-          <p>Website solutions for small businesses. Get found. Get booked. Get paid.</p>
+    <!-- Personal Website Creation -->
+    <section class="section" id="personal-websites">
+      <div class="container">
+        <div style="margin-bottom: 40px;">
+          <h2 style="margin-bottom: 12px;">Personal Website Creation</h2>
+          <p style="font-size: 1.125rem; color: var(--color-gray-600);">Portfolio or personal site? We build it simple and modern.</p>
         </div>
 
-        <div class="services-grid">
+        <div class="services-grid" style="max-width: 800px; margin: 0 auto;">
           <div class="service-card">
-            <div class="service-card-header">
-              <h4>Basic Business Website</h4>
-              <span class="service-card-badge">Quote-Based</span>
-            </div>
-            <p>Simple. Professional. Tells customers who you are and how to reach you.</p>
+            <h3>Personal or Portfolio Website</h3>
+            <p>Showcase your work with a simple, modern website. Perfect for freelancers and professionals.</p>
             <ul>
-              <li>Single or multi-page site</li>
-              <li>Mobile-friendly design</li>
-              <li>Business hours and location</li>
-              <li>Contact form or email integration</li>
+              <li>Clean, modern design</li>
+              <li>Mobile-friendly layout</li>
+              <li>Contact form or booking link</li>
+              <li>Portfolio or project showcase</li>
             </ul>
-            <a href="book.html?service=website-basic" class="btn btn-primary btn-full">Request Quote</a>
+            <a href="book.html?service=personal-website" class="btn btn-primary btn-full">Request Quote</a>
           </div>
 
           <div class="service-card">
-            <div class="service-card-header">
-              <h4>Booking or Contact Funnel Website</h4>
-              <span class="service-card-badge">Quote-Based</span>
-            </div>
-            <p>Let customers book appointments or submit enquiries automatically.</p>
+            <h3>Simple Booking or Contact Site</h3>
+            <p>Let people book with you or get in touch directly through your website.</p>
             <ul>
-              <li>Appointment booking system</li>
-              <li>Enquiry form with auto-responses</li>
-              <li>Calendar integration (Google, Outlook)</li>
-              <li>Email notification setup</li>
+              <li>Booking system or contact form</li>
+              <li>Automatic email notifications</li>
+              <li>Simple but professional design</li>
+              <li>Mobile optimised</li>
             </ul>
-            <a href="book.html?service=website-funnel" class="btn btn-primary btn-full">Request Quote</a>
+            <a href="book.html?service=contact-website" class="btn btn-primary btn-full">Request Quote</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Ready for personal tech help?</h2>
+        <p>Book a service, get a free assessment, or ask us anything. No commitment, no pressure.</p>
+        <div class="cta-buttons">
+          <a href="book.html" class="btn btn-white btn-lg">Book Tech Help</a>
+          <a href="book.html?assessment=true" class="btn btn-outline btn-lg" style="border-color: white; color: white;">Free Assessment</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ENTERPRISE SERVICES VIEW -->
+  <div id="enterpriseView" style="display: none;">
+
+    <!-- AI Lead Capture & Auto-Response Systems -->
+    <section class="section section-gray" id="lead-capture">
+      <div class="container">
+        <div style="margin-bottom: 40px;">
+          <h2 style="margin-bottom: 12px;">AI Lead Capture & Auto-Response Systems</h2>
+          <p style="font-size: 1.125rem; color: var(--color-gray-600);">Capture every lead. Respond instantly. Convert more enquiries.</p>
+        </div>
+
+        <div class="services-grid" style="grid-template-columns: repeat(3, 1fr); gap: 24px;">
+          <div class="service-card">
+            <h3>AI Chatbot for Lead Capture</h3>
+            <p>Let AI answer customer questions and capture details 24/7. We handle the setup, you handle the leads.</p>
+            <ul>
+              <li>Smart customer enquiry capture</li>
+              <li>Automatic acknowledgement responses</li>
+              <li>Lead qualification and routing</li>
+              <li>CRM integration (Zapier, email, etc.)</li>
+              <li>Built into your website</li>
+            </ul>
+            <a href="book.html?service=chatbot-lead-capture" class="btn btn-primary btn-full">Automate My Business</a>
           </div>
 
           <div class="service-card">
-            <div class="service-card-header">
-              <h4>Website + Tech Setup Bundle</h4>
-              <span class="service-card-badge">Quote-Based</span>
-            </div>
-            <p>New business? We build the site AND help you set up the tech behind it.</p>
+            <h3>Website with AI Integration</h3>
+            <p>High-conversion business website with AI chatbot built in. Designed to capture and qualify leads.</p>
             <ul>
-              <li>Website design and build</li>
-              <li>Email setup and configuration</li>
-              <li>Tech tools (payment, booking, CRM)</li>
-              <li>Staff training (if applicable)</li>
+              <li>High-conversion website design</li>
+              <li>AI chatbot for instant responses</li>
+              <li>Contact funnel optimised for leads</li>
+              <li>CRM and email integration</li>
+              <li>Price range: $500 – $3,000</li>
             </ul>
-            <a href="book.html?service=website-bundle" class="btn btn-primary btn-full">Request Quote</a>
+            <a href="book.html?service=website-ai-integration" class="btn btn-primary btn-full">Get a Quote</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lead Reactivation & Automation -->
+    <section class="section" id="lead-automation">
+      <div class="container">
+        <div style="margin-bottom: 40px;">
+          <h2 style="margin-bottom: 12px;">Lead Reactivation & Automation</h2>
+          <p style="font-size: 1.125rem; color: var(--color-gray-600);">Turn missed leads into bookings. Automate follow-ups. Grow revenue.</p>
+        </div>
+
+        <div class="services-grid" style="grid-template-columns: repeat(3, 1fr); gap: 24px;">
+          <div class="service-card">
+            <h3>Lead Reactivation Automation</h3>
+            <p>We identify old leads in your database and set up automated follow-ups that actually work.</p>
+            <ul>
+              <li>Lead database audit</li>
+              <li>Automated follow-up sequences</li>
+              <li>Personalised re-engagement emails</li>
+              <li>Tracking and reporting</li>
+              <li>Conversion measurement</li>
+            </ul>
+            <a href="book.html?service=lead-reactivation" class="btn btn-primary btn-full">Set Up Reactivation</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Business Website Creation -->
+    <section class="section section-gray" id="business-websites">
+      <div class="container">
+        <div style="margin-bottom: 40px;">
+          <h2 style="margin-bottom: 12px;">Business Website Creation</h2>
+          <p style="font-size: 1.125rem; color: var(--color-gray-600);">High-conversion websites designed to bring in leads and sales.</p>
+        </div>
+
+        <div class="services-grid" style="grid-template-columns: repeat(3, 1fr); gap: 24px;">
+          <div class="service-card">
+            <h3>Business Website (No AI)</h3>
+            <p>Professional, high-conversion website built to showcase your business and capture enquiries.</p>
+            <ul>
+              <li>Professional design</li>
+              <li>Mobile-optimised</li>
+              <li>Booking or contact funnel</li>
+              <li>SEO basics included</li>
+            </ul>
+            <a href="book.html?service=business-website" class="btn btn-primary btn-full">Get a Quote</a>
           </div>
 
           <div class="service-card">
-            <div class="service-card-header">
-              <h4>Website Maintenance Subscription</h4>
-              <span class="service-card-badge">Monthly</span>
-            </div>
-            <p>Updates, backups, security, and support. Ongoing.</p>
+            <h3>Website + AI Chatbot Bundle</h3>
+            <p>Website + built-in AI chatbot for automated lead capture and 24/7 customer responses.</p>
+            <ul>
+              <li>High-conversion business website</li>
+              <li>AI chatbot for lead capture</li>
+              <li>CRM integration</li>
+              <li>Analytics and reporting</li>
+            </ul>
+            <a href="book.html?service=website-chatbot-bundle" class="btn btn-primary btn-full">Get a Quote</a>
+          </div>
+
+          <div class="service-card">
+            <h3>Website Maintenance & Support</h3>
+            <p>Keep your website secure, fast, and up-to-date. Monthly maintenance included.</p>
             <ul>
               <li>Monthly updates and backups</li>
               <li>Security monitoring</li>
-              <li>2-3 hours of support per month</li>
-              <li>Bug fixes and tweaks</li>
+              <li>Performance optimisation</li>
+              <li>2-3 hours support per month</li>
             </ul>
             <a href="book.html?service=website-maintenance" class="btn btn-primary btn-full">Learn More</a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- AI Chatbot Services -->
-  <section class="section" id="chatbots">
-    <div class="container">
-      <div class="service-category">
-        <div class="service-category-header">
-          <h3>AI Chatbot Services</h3>
-          <p>Early-stage AI solutions — growing with our clients.</p>
-        </div>
-
-        <div class="services-grid">
-          <div class="service-card">
-            <div class="service-card-header">
-              <h4>Website FAQ Chatbot</h4>
-              <span class="service-card-badge badge-coming-soon">Coming Soon</span>
-            </div>
-            <p>Answer customer questions automatically. 24/7.</p>
-            <ul>
-              <li>AI chatbot for your website</li>
-              <li>FAQ-based knowledge base</li>
-              <li>Multi-language support (optional)</li>
-              <li>Analytics and conversation logs</li>
-            </ul>
-            <a href="book.html?service=chatbot-faq&waitlist=true" class="btn btn-outline btn-full">Join Waitlist</a>
-          </div>
-
-          <div class="service-card">
-            <div class="service-card-header">
-              <h4>Lead Capture & Auto-Response Chatbot</h4>
-              <span class="service-card-badge badge-coming-soon">Coming Soon</span>
-            </div>
-            <p>Capture customer details and send instant responses. While you sleep.</p>
-            <ul>
-              <li>Smart customer enquiry capture</li>
-              <li>Automatic acknowledgement emails</li>
-              <li>CRM integration (Zapier, etc.)</li>
-              <li>Escalation to human agents</li>
-            </ul>
-            <a href="book.html?service=chatbot-lead&waitlist=true" class="btn btn-outline btn-full">Join Waitlist</a>
-          </div>
-
-          <div class="service-card">
-            <div class="service-card-header">
-              <h4>AI Chatbot Subscription</h4>
-              <span class="service-card-badge badge-coming-soon">Coming Soon</span>
-            </div>
-            <p>Monthly subscription to AI chatbot hosting and management.</p>
-            <ul>
-              <li>Unlimited conversations</li>
-              <li>Monthly updates and improvements</li>
-              <li>Performance analytics</li>
-              <li>Priority support</li>
-            </ul>
-            <a href="book.html?service=chatbot-subscription&waitlist=true" class="btn btn-outline btn-full">Request Pricing</a>
-          </div>
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Ready to automate and grow your business?</h2>
+        <p>Book a free automation assessment. Let's talk about turning leads into revenue.</p>
+        <div class="cta-buttons">
+          <a href="book.html?service=business" class="btn btn-white btn-lg">Book Automation Assessment</a>
+          <a href="book.html?service=business&quote=true" class="btn btn-outline btn-lg" style="border-color: white; color: white;">Request Quote</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Recurring Support -->
-  <section class="section section-gray" id="support-plans">
-    <div class="container">
-      <div class="service-category">
-        <div class="service-category-header">
-          <h3>Recurring Support Plans</h3>
-          <p>Ongoing tech support for peace of mind.</p>
-        </div>
-
-        <div class="pricing-grid">
-          <div class="pricing-card">
-            <div class="pricing-card-header">
-              <div class="pricing-card-tier">Home</div>
-              <h3>Monthly Tech Support</h3>
-              <div class="pricing-card-price">Contact Us <span>/ month</span></div>
-            </div>
-            <ul>
-              <li>Unlimited remote support</li>
-              <li>2 on-site visits per month (1 hour each)</li>
-              <li>Priority response (24 hours)</li>
-              <li>Device & network troubleshooting</li>
-              <li>3-month minimum commitment</li>
-            </ul>
-            <a href="book.html?service=support-home" class="btn btn-primary btn-full">Get Started</a>
-          </div>
-
-          <div class="pricing-card featured">
-            <div class="pricing-card-header">
-              <div class="pricing-card-tier">Business</div>
-              <h3>Small Business IT Support</h3>
-              <div class="pricing-card-price">Contact Us <span>/ month</span></div>
-            </div>
-            <ul>
-              <li>Unlimited remote support</li>
-              <li>4 on-site visits per month (2 hours each)</li>
-              <li>Same-day priority response</li>
-              <li>Staff tech training (quarterly)</li>
-              <li>Network monitoring</li>
-              <li>6-month minimum commitment</li>
-            </ul>
-            <a href="book.html?service=support-business" class="btn btn-primary btn-full">Get Started</a>
-          </div>
-
-          <div class="pricing-card">
-            <div class="pricing-card-header">
-              <div class="pricing-card-tier">Website</div>
-              <h3>Website Maintenance</h3>
-              <div class="pricing-card-price">Contact Us <span>/ month</span></div>
-            </div>
-            <ul>
-              <li>Monthly backups & updates</li>
-              <li>Security monitoring</li>
-              <li>2-3 hours of support per month</li>
-              <li>Bug fixes and content tweaks</li>
-              <li>Monthly performance report</li>
-              <li>3-month minimum commitment</li>
-            </ul>
-            <a href="book.html?service=support-website" class="btn btn-primary btn-full">Get Started</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- General Tech Advice -->
-  <section class="section">
-    <div class="container">
-      <div class="service-category">
-        <div class="service-category-header">
-          <h3>General Tech Advice</h3>
-          <p>Plain English, always. Non-judgmental consultation for any tech question.</p>
-        </div>
-
-        <div class="services-grid" style="max-width: 600px; margin: 0 auto;">
-          <div class="service-card">
-            <div class="service-card-header">
-              <h4>Tech Consultation</h4>
-              <span class="service-card-badge">On-site / Remote</span>
-            </div>
-            <p>Not sure what you need? Overwhelmed by options? Need advice on a problem we haven't listed? We're here to help.</p>
-            <ul>
-              <li>Problem diagnosis</li>
-              <li>Solution recommendations</li>
-              <li>Equipment advice</li>
-              <li>Best-practice guidance</li>
-              <li>Non-judgmental, always</li>
-            </ul>
-            <a href="book.html?service=consultation" class="btn btn-primary btn-full">Book a Consultation</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="cta-section">
-    <div class="container">
-      <h2>Ready to get started?</h2>
-      <p>Book a service or request a free assessment. We'll be in touch within 24 hours.</p>
-      <div class="cta-buttons">
-        <a href="book.html" class="btn btn-white btn-lg">Book Now</a>
-        <a href="pricing.html" class="btn btn-outline btn-lg" style="border-color: white; color: white;">View Pricing</a>
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="footer-logo">Nepsys Technologies</div>
-          <p>Sydney-based tech solutions for homes and small businesses. No jargon. No pressure. Just clear answers.</p>
+          <div class="footer-logo">
+            <img src="assets/logo-full.png" alt="Nepsys Technologies" style="height: 200px; width: auto; filter: brightness(0) invert(1);">
+          </div>
+          <p style="margin-top: 16px; color: white;">Premium tech services for Sydney homes and businesses. Professional, reliable, results-driven.</p>
           <div class="footer-social">
             <a href="#" aria-label="Facebook">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -558,21 +455,10 @@
         </div>
 
         <div class="footer-column">
-          <h4>Services</h4>
-          <ul>
-            <li><a href="services.html#device-setup">Device Setup</a></li>
-            <li><a href="services.html#wifi">Wi-Fi & Network</a></li>
-            <li><a href="services.html#security">Cybersecurity</a></li>
-            <li><a href="services.html#websites">Websites</a></li>
-            <li><a href="services.html#chatbots">AI Chatbots</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column">
           <h4>Company</h4>
           <ul>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="index.html">About Us</a></li>
+            <li><a href="services.html">Services</a></li>
             <li><a href="faq.html">FAQ</a></li>
             <li><a href="book.html">Book Help</a></li>
           </ul>
@@ -581,11 +467,13 @@
         <div class="footer-column">
           <h4>Contact</h4>
           <ul>
-            <li><a href="tel:+61400000000">0400 000 000</a></li>
-            <li><a href="mailto:hello@nepsys.com.au">hello@nepsys.com.au</a></li>
+            <li><a href="tel:+61432457880">0432 457 880</a></li>
+            <li><a href="mailto:nepsystechnologies@gmail.com">nepsystechnologies@gmail.com</a></li>
             <li>Sydney, Australia</li>
           </ul>
         </div>
+
+        <div></div>
       </div>
 
       <div class="footer-bottom">
@@ -607,5 +495,38 @@
 
   <!-- JavaScript -->
   <script src="js/main.js"></script>
+  <script>
+    function showIndividual() {
+      document.getElementById('individualView').style.display = 'block';
+      document.getElementById('enterpriseView').style.display = 'none';
+      document.getElementById('toggleIndividual').style.background = 'white';
+      document.getElementById('toggleIndividual').style.color = 'var(--color-gray-900)';
+      document.getElementById('toggleEnterprise').style.background = 'transparent';
+      document.getElementById('toggleEnterprise').style.color = 'var(--color-gray-600)';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showEnterprise() {
+      document.getElementById('individualView').style.display = 'none';
+      document.getElementById('enterpriseView').style.display = 'block';
+      document.getElementById('toggleIndividual').style.background = 'transparent';
+      document.getElementById('toggleIndividual').style.color = 'var(--color-gray-600)';
+      document.getElementById('toggleEnterprise').style.background = 'white';
+      document.getElementById('toggleEnterprise').style.color = 'var(--color-gray-900)';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Check URL parameters on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const view = urlParams.get('view');
+
+      if (view === 'business') {
+        showEnterprise();
+      } else if (view === 'individual') {
+        showIndividual();
+      }
+    });
+  </script>
 </body>
 </html>

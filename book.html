@@ -22,11 +22,7 @@
   <nav class="navbar" id="navbar">
     <div class="container navbar-container">
       <a href="index.html" class="navbar-logo">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="40" height="40" rx="8" fill="#e63946"/>
-          <path d="M12 28V12h4l6 10 6-10h4v16h-4V18l-4 7h-4l-4-7v10h-4z" fill="white"/>
-        </svg>
-        Nepsys
+        <img src="assets/logo-icon.png" alt="Nepsys Technologies" style="height: 45px; width: auto;">
       </a>
 
       <div class="navbar-nav" id="navbarNav">
@@ -82,7 +78,7 @@
             <div class="book-step-number">3</div>
             <div class="book-step-content">
               <h4>We schedule your service</h4>
-              <p>Pick a time that works for you. Same-day and next-day slots often available.</p>
+              <p>Pick a time that works for you. We'll find a convenient slot.</p>
             </div>
           </div>
 
@@ -130,45 +126,74 @@
         <!-- Right Column: Form -->
         <div class="book-form">
           <form id="bookingForm" action="#" method="POST">
-            <!-- Service Selection -->
+            <!-- Customer Type Selection -->
             <div class="form-group">
-              <label class="form-label" for="serviceType">What do you need help with? <span>*</span></label>
-              <select id="serviceType" name="serviceType" class="form-select" required>
-                <option value="">Select a service...</option>
-                <optgroup label="Device & Setup">
-                  <option value="device-setup">New device setup</option>
-                  <option value="data-transfer">Data transfer (old to new device)</option>
-                  <option value="account-recovery">Email or account recovery</option>
-                  <option value="apps">App installation & configuration</option>
-                </optgroup>
-                <optgroup label="Network & Smart Home">
-                  <option value="wifi">Wi-Fi troubleshooting</option>
-                  <option value="printer">Printer setup</option>
-                  <option value="smart-tv">Smart TV & streaming setup</option>
-                  <option value="reset">Device factory reset</option>
-                </optgroup>
-                <optgroup label="Cybersecurity">
-                  <option value="antivirus">Antivirus setup</option>
-                  <option value="security">Security audit</option>
-                  <option value="2fa">2FA/MFA setup</option>
-                  <option value="password-audit">Password audit</option>
-                  <option value="scam-education">Scam education</option>
-                </optgroup>
-                <optgroup label="Website & Digital">
-                  <option value="website-basic">Basic business website</option>
-                  <option value="website-funnel">Booking/funnel website</option>
-                  <option value="website-bundle">Website + tech bundle</option>
-                  <option value="website-maintenance">Website maintenance</option>
-                </optgroup>
-                <optgroup label="Support Plans">
-                  <option value="support-home">Monthly tech support (home)</option>
-                  <option value="support-business">Small business IT support</option>
-                </optgroup>
-                <optgroup label="Other">
-                  <option value="consultation">General tech consultation</option>
-                  <option value="other">Other / Not sure</option>
-                </optgroup>
-              </select>
+              <label class="form-label">Are you a: <span>*</span></label>
+              <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+                <button type="button" id="typeIndividual" class="btn btn-primary" style="flex: 1; padding: 12px; font-weight: 600; border: 2px solid var(--color-red);">Individual</button>
+                <button type="button" id="typeBusiness" class="btn btn-outline-red" style="flex: 1; padding: 12px; font-weight: 600; border: 2px solid var(--color-red); background: transparent; color: var(--color-red);">Business</button>
+              </div>
+            </div>
+
+            <!-- Service Selection for Individual -->
+            <div id="individualServices" style="display: block;">
+              <div class="form-group">
+                <label class="form-label" for="serviceType">What do you need help with? <span>*</span></label>
+                <select id="serviceType" name="serviceType" class="form-select" required>
+                  <option value="">Select a service...</option>
+                  <optgroup label="Technology Support">
+                    <option value="tech-network">Network troubleshooting</option>
+                    <option value="tech-account">Email or account recovery</option>
+                  </optgroup>
+                  <optgroup label="Device Support">
+                    <option value="device-setup">New device setup</option>
+                    <option value="device-transfer">Data transfer (old to new device)</option>
+                    <option value="device-reset">Device factory reset & clean install</option>
+                  </optgroup>
+                  <optgroup label="Application">
+                    <option value="app-install">App installation & configuration</option>
+                    <option value="app-guide">Application setup & user guide</option>
+                    <option value="app-troubleshoot">App troubleshooting</option>
+                  </optgroup>
+                  <optgroup label="Cybersecurity">
+                    <option value="cyber-antivirus">Antivirus & malware protection</option>
+                    <option value="cyber-password">Password & 2FA security setup</option>
+                    <option value="cyber-audit">Security audit & assessment</option>
+                    <option value="cyber-education">Scam & phishing education</option>
+                  </optgroup>
+                  <optgroup label="Smart Home">
+                    <option value="smart-setup">Smart home device setup</option>
+                    <option value="smart-optimization">Smart home optimization</option>
+                    <option value="tech-streaming">Smart TV & streaming setup</option>
+                  </optgroup>
+                  <optgroup label="Other">
+                    <option value="consultation">Tech consulting</option>
+                    <option value="other-issue">Other issue</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+
+            <!-- Service Selection for Business -->
+            <div id="businessServices" style="display: none;">
+              <div class="form-group">
+                <label class="form-label" for="serviceTypeBusiness">What do you need help with? <span>*</span></label>
+                <select id="serviceTypeBusiness" name="serviceTypeBusiness" class="form-select">
+                  <option value="">Select a service...</option>
+                  <optgroup label="AI Lead Capture & Automation">
+                    <option value="ai-chatbot">AI chatbot for lead capture</option>
+                    <option value="ai-website">Website with AI integration</option>
+                  </optgroup>
+                  <optgroup label="Lead Reactivation & Automation">
+                    <option value="lead-reactivation">Lead reactivation automation</option>
+                  </optgroup>
+                  <optgroup label="Website Creation">
+                    <option value="website-business">Business website (no AI)</option>
+                    <option value="website-ai-bundle">Website + AI chatbot bundle</option>
+                    <option value="website-maintenance">Website maintenance & support</option>
+                  </optgroup>
+                </select>
+              </div>
             </div>
 
             <!-- Location Preference -->
@@ -182,14 +207,6 @@
                 <label class="form-radio">
                   <input type="radio" name="locationType" value="remote">
                   Remote support (online session)
-                </label>
-                <label class="form-radio">
-                  <input type="radio" name="locationType" value="hybrid">
-                  Hybrid (start remote, visit if needed)
-                </label>
-                <label class="form-radio">
-                  <input type="radio" name="locationType" value="unsure">
-                  Not sure — advise me
                 </label>
               </div>
             </div>
@@ -271,42 +288,9 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label">Budget range (if applicable)</label>
-              <div class="form-checkbox-group" style="flex-direction: column;">
-                <label class="form-checkbox">
-                  <input type="radio" name="budget" value="under-100">
-                  Under $100
-                </label>
-                <label class="form-checkbox">
-                  <input type="radio" name="budget" value="100-300">
-                  $100 - $300
-                </label>
-                <label class="form-checkbox">
-                  <input type="radio" name="budget" value="300-500">
-                  $300 - $500
-                </label>
-                <label class="form-checkbox">
-                  <input type="radio" name="budget" value="over-500">
-                  $500+
-                </label>
-                <label class="form-checkbox">
-                  <input type="radio" name="budget" value="not-sure">
-                  Not sure yet
-                </label>
-              </div>
-            </div>
-
             <div class="divider"></div>
 
             <!-- Checkboxes -->
-            <div class="form-group">
-              <label class="form-checkbox">
-                <input type="checkbox" name="freeConsultation" value="yes">
-                I'd like a FREE 15-minute phone consultation to confirm what I need
-              </label>
-            </div>
-
             <div class="form-group">
               <label class="form-checkbox">
                 <input type="checkbox" name="newsletter" value="yes">
@@ -351,8 +335,10 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="footer-logo">Nepsys Technologies</div>
-          <p>Sydney-based tech solutions for homes and small businesses. No jargon. No pressure. Just clear answers.</p>
+          <div class="footer-logo">
+            <img src="assets/logo-full.png" alt="Nepsys Technologies" style="height: 200px; width: auto; filter: brightness(0) invert(1);">
+          </div>
+          <p style="margin-top: 16px; color: white;">Premium tech services for Sydney homes and businesses. Professional, reliable, results-driven.</p>
           <div class="footer-social">
             <a href="#" aria-label="Facebook">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -373,17 +359,6 @@
         </div>
 
         <div class="footer-column">
-          <h4>Services</h4>
-          <ul>
-            <li><a href="services.html#device-setup">Device Setup</a></li>
-            <li><a href="services.html#wifi">Wi-Fi & Network</a></li>
-            <li><a href="services.html#security">Cybersecurity</a></li>
-            <li><a href="services.html#websites">Websites</a></li>
-            <li><a href="services.html#chatbots">AI Chatbots</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column">
           <h4>Company</h4>
           <ul>
             <li><a href="about.html">About Us</a></li>
@@ -396,8 +371,8 @@
         <div class="footer-column">
           <h4>Contact</h4>
           <ul>
-            <li><a href="tel:+61400000000">0400 000 000</a></li>
-            <li><a href="mailto:hello@nepsys.com.au">hello@nepsys.com.au</a></li>
+            <li><a href="tel:+61432457880">0432 457 880</a></li>
+            <li><a href="mailto:nepsystechnologies@gmail.com">nepsystechnologies@gmail.com</a></li>
             <li>Sydney, Australia</li>
           </ul>
         </div>
@@ -422,5 +397,60 @@
 
   <!-- JavaScript -->
   <script src="js/main.js"></script>
+  <script>
+    // Handle Individual/Business toggle
+    const typeIndividual = document.getElementById('typeIndividual');
+    const typeBusiness = document.getElementById('typeBusiness');
+    const individualServices = document.getElementById('individualServices');
+    const businessServices = document.getElementById('businessServices');
+
+    // Set Individual as default on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      typeIndividual.style.background = 'var(--color-red)';
+      typeIndividual.style.color = 'white';
+      typeBusiness.style.background = 'transparent';
+      typeBusiness.style.color = 'var(--color-red)';
+      individualServices.style.display = 'block';
+      businessServices.style.display = 'none';
+      document.getElementById('serviceType').required = true;
+      document.getElementById('serviceTypeBusiness').required = false;
+    });
+
+    typeIndividual.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Update button styles
+      typeIndividual.style.background = 'var(--color-red)';
+      typeIndividual.style.color = 'white';
+      typeBusiness.style.background = 'transparent';
+      typeBusiness.style.color = 'var(--color-red)';
+
+      // Show/hide form sections
+      individualServices.style.display = 'block';
+      businessServices.style.display = 'none';
+
+      // Update required fields
+      document.getElementById('serviceType').required = true;
+      document.getElementById('serviceTypeBusiness').required = false;
+      document.getElementById('serviceTypeBusiness').value = '';
+    });
+
+    typeBusiness.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Update button styles
+      typeBusiness.style.background = 'var(--color-red)';
+      typeBusiness.style.color = 'white';
+      typeIndividual.style.background = 'transparent';
+      typeIndividual.style.color = 'var(--color-red)';
+
+      // Show/hide form sections
+      individualServices.style.display = 'none';
+      businessServices.style.display = 'block';
+
+      // Update required fields
+      document.getElementById('serviceType').required = false;
+      document.getElementById('serviceTypeBusiness').required = true;
+      document.getElementById('serviceType').value = '';
+    });
+  </script>
 </body>
 </html>
