@@ -1,0 +1,15 @@
+# mod_rewrite starts here
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Don't apply to existing directories or files
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Check for file in directory with .html extension
+RewriteCond %{REQUEST_FILENAME}\.html -f
+
+# Rewrite the URL to show the .html file without the extension
+RewriteRule ^(.*)$ $1.html [NC,L]
+</IfModule>
+
