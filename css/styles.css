@@ -629,12 +629,12 @@ p {
 }
 
 .trust-card h3 {
-  color: var(--color-black);
+  color: var(--color-white);
   margin-bottom: var(--spacing-4);
 }
 
 .trust-card p {
-  color: var(--color-gray-700);
+  color: var(--color-gray-300);
   margin-bottom: var(--spacing-4);
 }
 
@@ -644,7 +644,7 @@ p {
 }
 
 .trust-card li {
-  color: var(--color-gray-600);
+  color: var(--color-gray-300);
   font-size: var(--font-size-sm);
   padding-left: var(--spacing-6);
   position: relative;
