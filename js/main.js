@@ -1,417 +1,254 @@
 /**
- * Nepsys Technologies - Main JavaScript
- * Handles all interactive functionality
+ * Nepsys Technologies — site behaviour.
+ * No dependencies. Everything degrades to a readable static page without JS
+ * or when the visitor prefers reduced motion.
  */
+(function () {
+  'use strict';
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize all components
-  initNavbar();
-  initScrollToTop();
-  initFAQAccordion();
-  initFAQFilters();
-  initForms();
-  initSmoothScroll();
-  initServicePreSelection();
-});
+  var root = document.documentElement;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) root.classList.add('js-motion');
 
-/**
- * Navbar functionality
- * - Scroll shadow effect
- * - Mobile menu toggle
- */
-function initNavbar() {
-  const navbar = document.getElementById('navbar');
-  const navbarToggle = document.getElementById('navbarToggle');
-  const navbarNav = document.getElementById('navbarNav');
+  var config = window.NEPSYS_CONFIG || {};
 
-  // Add shadow on scroll
-  if (navbar) {
-    window.addEventListener('scroll', function() {
-      if (window.scrollY > 10) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
+  /* ---------- Header + mobile menu ---------- */
+  function initHeader() {
+    var header = document.querySelector('.site-header');
+    var toggle = document.querySelector('.menu-toggle');
+    var mobileNav = document.getElementById('mobile-nav');
+    if (!header) return;
+
+    var setSolid = function () {
+      header.classList.toggle('is-solid', window.scrollY > 24 || !header.hasAttribute('data-transparent'));
+    };
+    setSolid();
+    window.addEventListener('scroll', setSolid, { passive: true });
+
+    if (!toggle || !mobileNav) return;
+    var setOpen = function (open) {
+      root.classList.toggle('menu-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      mobileNav.toggleAttribute('inert', !open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+    setOpen(false);
+    toggle.addEventListener('click', function () {
+      setOpen(!root.classList.contains('menu-open'));
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && root.classList.contains('menu-open')) { setOpen(false); toggle.focus(); }
+    });
+    mobileNav.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setOpen(false);
     });
   }
 
-  // Mobile menu toggle
-  if (navbarToggle && navbarNav) {
-    navbarToggle.addEventListener('click', function() {
-      navbarNav.classList.toggle('open');
-
-      // Animate hamburger icon
-      const spans = navbarToggle.querySelectorAll('span');
-      if (navbarNav.classList.contains('open')) {
-        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-        spans[1].style.opacity = '0';
-        spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-      } else {
-        spans[0].style.transform = 'none';
-        spans[1].style.opacity = '1';
-        spans[2].style.transform = 'none';
-      }
-    });
-
-    // Close menu when clicking a link
-    const navLinks = navbarNav.querySelectorAll('.navbar-link');
-    navLinks.forEach(function(link) {
-      link.addEventListener('click', function() {
-        navbarNav.classList.remove('open');
-        const spans = navbarToggle.querySelectorAll('span');
-        spans[0].style.transform = 'none';
-        spans[1].style.opacity = '1';
-        spans[2].style.transform = 'none';
+  /* ---------- Reveal on scroll ---------- */
+  function initReveal() {
+    var items = document.querySelectorAll('.reveal');
+    if (!items.length) return;
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('is-in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { entry.target.classList.add('is-in'); io.unobserve(entry.target); }
       });
+    }, { rootMargin: '0px 0px -10% 0px' });
+    items.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------- Scroll-driven effects (one rAF loop for all of them) ---------- */
+  var scrollers = [];
+  function onScrollFrame(fn) { scrollers.push(fn); }
+  function startScrollLoop() {
+    if (!scrollers.length) return;
+    var ticking = false;
+    var run = function () { ticking = false; scrollers.forEach(function (fn) { fn(); }); };
+    var request = function () { if (!ticking) { ticking = true; requestAnimationFrame(run); } };
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request);
+    run();
+  }
+  function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
+
+  // Hero mark drifts and fades as you scroll away from it.
+  function initHeroParallax() {
+    var mark = document.querySelector('.hero-mark');
+    if (!mark || reduceMotion) return;
+    onScrollFrame(function () {
+      var y = window.scrollY, h = window.innerHeight;
+      if (y > h * 1.2) return;
+      var p = clamp(y / h, 0, 1);
+      mark.style.transform = 'translate3d(0,' + (y * 0.35) + 'px,0) rotate(' + (p * 8) + 'deg) scale(' + (1 - p * 0.15) + ')';
+      mark.style.opacity = String(1 - p * 0.8);
     });
   }
-}
 
-/**
- * Scroll to top button
- */
-function initScrollToTop() {
-  const scrollTopBtn = document.getElementById('scrollTop');
-
-  if (scrollTopBtn) {
-    // Show/hide button based on scroll position
-    window.addEventListener('scroll', function() {
-      if (window.scrollY > 500) {
-        scrollTopBtn.classList.add('visible');
-      } else {
-        scrollTopBtn.classList.remove('visible');
-      }
-    });
-
-    // Scroll to top on click
-    scrollTopBtn.addEventListener('click', function() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+  // Words light up one by one as the statement passes through the viewport.
+  function initStatement() {
+    var el = document.querySelector('[data-scrub-words]');
+    if (!el || reduceMotion) return;
+    var words = [];
+    Array.prototype.slice.call(el.childNodes).forEach(function (node) {
+      var isHl = node.nodeType === 1;
+      var text = node.textContent;
+      var frag = document.createDocumentFragment();
+      text.split(/(\s+)/).forEach(function (part) {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+        var span = document.createElement('span');
+        span.className = 'w' + (isHl ? ' hl' : '');
+        span.textContent = part;
+        words.push(span);
+        frag.appendChild(span);
       });
+      el.replaceChild(frag, node);
+    });
+    onScrollFrame(function () {
+      var r = el.getBoundingClientRect(), vh = window.innerHeight;
+      var p = clamp((vh * 0.85 - r.top) / (r.height + vh * 0.35), 0, 1);
+      var lit = Math.round(p * words.length);
+      words.forEach(function (w, i) { w.classList.toggle('on', i < lit); });
     });
   }
-}
 
-/**
- * FAQ Accordion functionality
- */
-function initFAQAccordion() {
-  const faqItems = document.querySelectorAll('.faq-item');
+  // Pinned automation pipeline: vertical scroll drives the track sideways,
+  // the wire fills, and each stage switches on as the packet reaches it.
+  function initPipeline() {
+    var section = document.querySelector('.pipeline');
+    if (!section || reduceMotion) return;
+    var track = section.querySelector('.track');
+    var fill = section.querySelector('.wire-fill');
+    var stages = Array.prototype.slice.call(section.querySelectorAll('.stage'));
+    var count = section.querySelector('.hud-count strong');
+    var bar = section.querySelector('.hud-bar i');
+    var wire = section.querySelector('.wire');
+    var distance = 0, nodeX = [], wireStart = 0;
 
-  faqItems.forEach(function(item) {
-    const question = item.querySelector('.faq-question');
+    var measure = function () {
+      track.style.transform = 'none';
+      distance = Math.max(0, track.scrollWidth - window.innerWidth);
+      // Scroll length: the sideways distance plus a beat at each end.
+      section.style.height = (distance + window.innerHeight * 1.6) + 'px';
+      var trackLeft = track.getBoundingClientRect().left;
+      nodeX = stages.map(function (s) { return s.getBoundingClientRect().left - trackLeft + 28; });
+      wireStart = nodeX[0];
+      wire.style.left = fill.style.left = wireStart + 'px';
+      wire.style.right = 'auto';
+      wire.style.width = (nodeX[nodeX.length - 1] - wireStart) + 'px';
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    window.addEventListener('load', measure);
 
-    if (question) {
-      question.addEventListener('click', function() {
-        // Close other open items (optional - for single open item behavior)
-        const currentlyOpen = document.querySelector('.faq-item.open');
-        if (currentlyOpen && currentlyOpen !== item) {
-          currentlyOpen.classList.remove('open');
-        }
+    onScrollFrame(function () {
+      var r = section.getBoundingClientRect();
+      var total = section.offsetHeight - window.innerHeight;
+      var p = clamp(-r.top / total, 0, 1);
+      var x = p * distance;
+      track.style.transform = 'translate3d(' + (-x) + 'px,0,0)';
+      // The packet sits ~40% across the screen, so stages light up just before centre.
+      var packet = x + window.innerWidth * (window.innerWidth < 760 ? 0.5 : 0.42);
+      var last = nodeX[nodeX.length - 1];
+      var head = p >= 0.995 ? last : Math.min(packet, last);
+      fill.style.width = Math.max(0, head - wireStart) + 'px';
+      var active = 0;
+      stages.forEach(function (s, i) {
+        var on = head >= nodeX[i] - 2;
+        s.classList.toggle('is-on', on);
+        if (on) active = i + 1;
+      });
+      if (count) count.textContent = String(active).padStart(2, '0');
+      if (bar) bar.style.transform = 'scaleX(' + p + ')';
+    });
+  }
 
-        // Toggle current item
-        item.classList.toggle('open');
+  /* ---------- GHL embeds from js/config.js ---------- */
+  function loadScriptOnce(src, attrs) {
+    if (document.querySelector('script[src="' + src + '"]')) return;
+    var s = document.createElement('script');
+    s.src = src; s.async = true;
+    Object.keys(attrs || {}).forEach(function (k) { s.setAttribute(k, attrs[k]); });
+    document.body.appendChild(s);
+  }
+
+  function initEmbeds() {
+    var embedUsed = false;
+    var makeFrame = function (slot, url, title) {
+      var frame = document.createElement('iframe');
+      frame.src = url;
+      frame.title = title;
+      frame.loading = 'lazy';
+      frame.id = url.split('/').pop() + '_embed'; // GHL's form_embed.js resizes frames by id
+      frame.style.width = '100%';
+      frame.setAttribute('scrolling', 'no');
+      slot.innerHTML = '';
+      slot.appendChild(frame);
+      slot.hidden = false;
+      embedUsed = true;
+    };
+
+    // Elements marked data-when="x" show only when x is configured; "no-x" only when it isn't.
+    var setWhen = function (name, on) {
+      document.querySelectorAll('[data-when="' + name + '"]').forEach(function (el) { el.hidden = !on; });
+      document.querySelectorAll('[data-when="no-' + name + '"]').forEach(function (el) { el.hidden = on; });
+    };
+
+    document.querySelectorAll('[data-embed="calendar"]').forEach(function (slot) {
+      if (config.calendarEmbedUrl) makeFrame(slot, config.calendarEmbedUrl, 'Book a 15-minute call with Nepsys Technologies');
+    });
+    document.querySelectorAll('[data-embed="form"]').forEach(function (slot) {
+      if (config.formEmbedUrl) makeFrame(slot, config.formEmbedUrl, 'Request a callback from Nepsys Technologies');
+    });
+    setWhen('calendar', !!config.calendarEmbedUrl);
+    setWhen('form', !!config.formEmbedUrl);
+    if (embedUsed) loadScriptOnce('https://link.msgsndr.com/js/form_embed.js');
+
+    if (config.chatWidgetId) {
+      loadScriptOnce('https://widgets.leadconnectorhq.com/loader.js', {
+        'data-resources-url': 'https://widgets.leadconnectorhq.com/chat-widget/loader.js',
+        'data-widget-id': config.chatWidgetId
       });
     }
-  });
-}
+    setWhen('demo-chat', !!config.chatWidgetId);
+    document.querySelectorAll('[data-demo-chat]').forEach(function (el) { el.hidden = !config.chatWidgetId; });
 
-/**
- * FAQ Category filters
- */
-function initFAQFilters() {
-  const filterBtns = document.querySelectorAll('.faq-category-btn');
-  const faqItems = document.querySelectorAll('.faq-item');
-
-  filterBtns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const category = btn.getAttribute('data-category');
-
-      // Update active button
-      filterBtns.forEach(function(b) {
-        b.classList.remove('active');
-      });
-      btn.classList.add('active');
-
-      // Filter FAQ items
-      faqItems.forEach(function(item) {
-        const itemCategory = item.getAttribute('data-category');
-
-        if (category === 'all' || itemCategory === category) {
-          item.style.display = 'block';
-        } else {
-          item.style.display = 'none';
-        }
-      });
+    var demo = config.demoPhone || {};
+    var hasDemo = !!(demo.display && demo.tel);
+    setWhen('demo-phone', hasDemo);
+    document.querySelectorAll('[data-demo-phone]').forEach(function (el) {
+      if (!hasDemo) return;
+      var link = el.querySelector('a');
+      link.href = 'tel:' + demo.tel;
+      link.textContent = demo.display;
+      el.hidden = false;
     });
+  }
+
+  /* ---------- /book?type=audit preselects the audit option ---------- */
+  function initRequestType() {
+    var select = document.getElementById('request');
+    if (select && /[?&]type=audit\b/.test(window.location.search)) select.value = 'Missed-call audit';
+  }
+
+  /* ---------- Footer year ---------- */
+  function initYear() {
+    document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initHeader();
+    initReveal();
+    initHeroParallax();
+    initStatement();
+    initPipeline();
+    startScrollLoop();
+    initEmbeds();
+    initRequestType();
+    initYear();
   });
-}
-
-/**
- * Form handling
- */
-function initForms() {
-  // Booking form
-  const bookingForm = document.getElementById('bookingForm');
-  if (bookingForm) {
-    bookingForm.addEventListener('submit', handleBookingFormSubmit);
-  }
-
-  // Website quote form
-  const websiteQuoteForm = document.getElementById('websiteQuoteForm');
-  if (websiteQuoteForm) {
-    websiteQuoteForm.addEventListener('submit', handleWebsiteQuoteFormSubmit);
-  }
-}
-
-/**
- * Handle booking form submission
- */
-function handleBookingFormSubmit(e) {
-  e.preventDefault();
-
-  const form = e.target;
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
-
-  // Log form data (for development)
-  console.log('Booking form submitted:', data);
-
-  // Show confirmation
-  showConfirmation(form);
-
-  // Here you would typically send the data to your backend/API
-  // Example:
-  // sendFormData('/api/book', data);
-}
-
-/**
- * Handle website quote form submission
- */
-function handleWebsiteQuoteFormSubmit(e) {
-  e.preventDefault();
-
-  const form = e.target;
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
-
-  // Log form data (for development)
-  console.log('Website quote form submitted:', data);
-
-  // Show confirmation message
-  const submitBtn = form.querySelector('button[type="submit"]');
-  const originalText = submitBtn.textContent;
-
-  submitBtn.textContent = 'Request Sent!';
-  submitBtn.disabled = true;
-  submitBtn.style.background = '#10b981';
-
-  // Reset form
-  setTimeout(function() {
-    form.reset();
-    submitBtn.textContent = originalText;
-    submitBtn.disabled = false;
-    submitBtn.style.background = '';
-  }, 3000);
-
-  // Here you would typically send the data to your backend/API
-  // Example:
-  // sendFormData('/api/quote', data);
-}
-
-/**
- * Show confirmation modal/message
- */
-function showConfirmation(form) {
-  const modal = document.getElementById('confirmationModal');
-
-  if (modal) {
-    modal.style.display = 'flex';
-    modal.style.position = 'fixed';
-    modal.style.top = '0';
-    modal.style.left = '0';
-    modal.style.right = '0';
-    modal.style.bottom = '0';
-    modal.style.background = 'rgba(0,0,0,0.7)';
-    modal.style.alignItems = 'center';
-    modal.style.justifyContent = 'center';
-    modal.style.zIndex = '9999';
-
-    const modalContent = modal.querySelector('.modal-content');
-    if (modalContent) {
-      modalContent.style.background = 'white';
-      modalContent.style.padding = '48px';
-      modalContent.style.borderRadius = '16px';
-      modalContent.style.maxWidth = '500px';
-      modalContent.style.textAlign = 'center';
-    }
-  } else {
-    // Fallback: Update the form to show confirmation
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-
-    submitBtn.textContent = 'Request Sent!';
-    submitBtn.disabled = true;
-    submitBtn.style.background = '#10b981';
-
-    // Show an alert as fallback
-    alert('Thanks! We\'ve received your request. We\'ll be in touch within 24 hours.');
-
-    // Reset form
-    form.reset();
-
-    setTimeout(function() {
-      submitBtn.textContent = originalText;
-      submitBtn.disabled = false;
-      submitBtn.style.background = '';
-    }, 3000);
-  }
-}
-
-/**
- * Smooth scroll for anchor links
- */
-function initSmoothScroll() {
-  const anchorLinks = document.querySelectorAll('a[href^="#"]');
-
-  anchorLinks.forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      const href = link.getAttribute('href');
-
-      if (href === '#') return;
-
-      const target = document.querySelector(href);
-
-      if (target) {
-        e.preventDefault();
-
-        const navbarHeight = 72; // Fixed navbar height
-        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
-      }
-    });
-  });
-}
-
-/**
- * Pre-select service from URL parameters
- */
-function initServicePreSelection() {
-  const urlParams = new URLSearchParams(window.location.search);
-
-  // Pre-select service type
-  const serviceParam = urlParams.get('service');
-  if (serviceParam) {
-    const serviceSelect = document.getElementById('serviceType');
-    if (serviceSelect) {
-      serviceSelect.value = serviceParam;
-    }
-  }
-
-  // Check if it's an assessment request
-  const assessmentParam = urlParams.get('assessment');
-  if (assessmentParam === 'true') {
-    const freeConsultation = document.querySelector('input[name="freeConsultation"]');
-    if (freeConsultation) {
-      freeConsultation.checked = true;
-    }
-  }
-
-  // Check if it's a waitlist request
-  const waitlistParam = urlParams.get('waitlist');
-  if (waitlistParam === 'true') {
-    // Could add special handling for waitlist requests
-    console.log('Waitlist request for:', serviceParam);
-  }
-}
-
-/**
- * Utility: Send form data to API
- * This is a placeholder for your actual API integration
- */
-function sendFormData(endpoint, data) {
-  // This would be replaced with your actual API call
-  // For example, using fetch or a form submission service
-
-  /*
-  fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-  .then(response => response.json())
-  .then(result => {
-    console.log('Success:', result);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-  */
-
-  console.log('Would send to', endpoint, ':', data);
-}
-
-/**
- * Utility: Validate email format
- */
-function isValidEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-/**
- * Utility: Validate Australian phone number
- */
-function isValidAustralianPhone(phone) {
-  // Remove spaces and dashes
-  const cleanPhone = phone.replace(/[\s-]/g, '');
-  // Check for valid Australian mobile or landline
-  const mobileRegex = /^(04|\+614)\d{8}$/;
-  const landlineRegex = /^(0[2378]|\+61[2378])\d{8}$/;
-  return mobileRegex.test(cleanPhone) || landlineRegex.test(cleanPhone);
-}
-
-/**
- * Add animation on scroll (optional enhancement)
- */
-function initScrollAnimations() {
-  const animateElements = document.querySelectorAll('.problem-card, .service-card, .pricing-card, .testimonial-card, .value-card, .team-card');
-
-  const observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  });
-
-  animateElements.forEach(function(el) {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    observer.observe(el);
-  });
-}
-
-// Uncomment to enable scroll animations
-// initScrollAnimations();
-
-/**
- * Select user type (Individual or Business) for personalized experience
- */
-function selectUserType(type) {
-  localStorage.setItem('userType', type);
-  window.location.href = '/services';
-}
-
+})();
