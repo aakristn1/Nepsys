@@ -36,15 +36,7 @@ window.NEPSYS_CONFIG = {
   chatWidgetId: '',
 
   /* --------------------------------------------------------------------
-   * 4. LIVE DEMO PHONE NUMBER — shown on /demo
-   * The number that rings your demo AI receptionist / missed-call flow.
-   * display: how it's written on the page, e.g. '02 1234 5678'
-   * tel: international format for the link, e.g. '+61212345678'
-   * ------------------------------------------------------------------ */
-  demoPhone: { display: '', tel: '' },
-
-  /* --------------------------------------------------------------------
-   * 5. ANALYTICS — placeholder only. Nothing is loaded.
+   * 4. ANALYTICS — placeholder only. Nothing is loaded.
    * No tracking scripts are installed on this site. If you decide to add
    * one (e.g. GA4), add it deliberately and update /privacy to match.
    * ------------------------------------------------------------------ */

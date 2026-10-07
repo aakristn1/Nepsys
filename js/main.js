@@ -214,19 +214,6 @@
         'data-widget-id': config.chatWidgetId
       });
     }
-    setWhen('demo-chat', !!config.chatWidgetId);
-    document.querySelectorAll('[data-demo-chat]').forEach(function (el) { el.hidden = !config.chatWidgetId; });
-
-    var demo = config.demoPhone || {};
-    var hasDemo = !!(demo.display && demo.tel);
-    setWhen('demo-phone', hasDemo);
-    document.querySelectorAll('[data-demo-phone]').forEach(function (el) {
-      if (!hasDemo) return;
-      var link = el.querySelector('a');
-      link.href = 'tel:' + demo.tel;
-      link.textContent = demo.display;
-      el.hidden = false;
-    });
   }
 
   /* ---------- /book?type=audit preselects the audit option ---------- */

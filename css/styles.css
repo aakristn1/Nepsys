@@ -469,8 +469,8 @@ h1 em, h2 em { color: var(--red); }
 .embed-slot iframe { width: 100%; border: 0; min-height: 680px; }
 
 .contact-card { border: 1px solid var(--line-on-light); padding: 28px; display: grid; gap: 18px; }
-.contact-card a { font-weight: 600; text-decoration: none; font-size: 1.05rem; word-break: break-word; }
-.contact-card a:hover { color: var(--red-deep); }
+.contact-card a:not(.btn) { font-weight: 600; text-decoration: none; font-size: 1.05rem; word-break: break-word; }
+.contact-card a:not(.btn):hover { color: var(--red-deep); }
 .contact-card dt { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted-on-light); }
 .contact-card dd { margin: 4px 0 0; }
 
