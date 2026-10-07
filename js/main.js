@@ -234,6 +234,23 @@
     var remaining = MAX;
     try { var saved = parseInt(localStorage.getItem(STORE), 10); if (saved >= 0 && saved <= MAX) remaining = saved; } catch (e) {}
 
+    // Admin mode: visit any page with ?admin=<passphrase> once to save it in this browser
+    // (?admin=off removes it). The Worker checks it against its ADMIN_TOKEN secret.
+    var ADMIN_STORE = 'nepsys-chat-admin';
+    var adminKey = '', adminMode = false;
+    try {
+      var params = new URLSearchParams(window.location.search);
+      if (params.has('admin')) {
+        var given = params.get('admin');
+        if (!given || given === 'off') localStorage.removeItem(ADMIN_STORE);
+        else localStorage.setItem(ADMIN_STORE, given);
+        params.delete('admin'); // keep the passphrase out of the address bar and history
+        var rest = params.toString();
+        history.replaceState(null, '', window.location.pathname + (rest ? '?' + rest : '') + window.location.hash);
+      }
+      adminKey = localStorage.getItem(ADMIN_STORE) || '';
+    } catch (e) {}
+
     var chatIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/><path d="M8 11h8M8 14h5"/></svg>';
     var closeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 
@@ -270,6 +287,7 @@
     var form = panel.querySelector('.chat-form');
     var input = form.querySelector('input');
     var send = form.querySelector('button');
+    var disclaimer = panel.querySelector('.chat-disclaimer');
     var busy = false, lastSent = 0, statusChecked = false;
 
     var add = function (cls, text) {
@@ -289,8 +307,11 @@
       log.scrollTop = log.scrollHeight;
     };
     var render = function () {
-      try { localStorage.setItem(STORE, String(remaining)); } catch (e) {}
-      var over = remaining <= 0;
+      if (!adminMode) { try { localStorage.setItem(STORE, String(remaining)); } catch (e) {} }
+      var over = !adminMode && remaining <= 0;
+      var doneBox = panel.querySelector('.chat-done');
+      if (!over && doneBox) doneBox.remove();
+      disclaimer.textContent = adminMode ? 'Admin mode: no message limit' : '*This demo allows for ' + MAX + ' messages';
       input.disabled = over || busy;
       send.disabled = over || busy;
       input.placeholder = over ? 'Demo complete' : 'Type your question';
@@ -298,6 +319,7 @@
     };
 
     var post = function (payload) {
+      if (adminKey) payload.admin = adminKey;
       return fetch(config.chatApiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -353,7 +375,7 @@
       if (!statusChecked) {
         statusChecked = true;
         post({ action: 'status' }).then(function (r) {
-          if (r.ok && typeof r.data.remaining === 'number') { remaining = r.data.remaining; render(); }
+          if (r.ok && typeof r.data.remaining === 'number') { adminMode = r.data.admin === true; remaining = r.data.remaining; render(); }
         }).catch(function () {});
       }
     };
@@ -371,7 +393,7 @@
       e.preventDefault();
       var text = input.value.trim();
       // One message at a time, a short pause between messages, and nothing after the limit.
-      if (!text || busy || remaining <= 0 || Date.now() - lastSent < 2000) return;
+      if (!text || busy || (!adminMode && remaining <= 0) || Date.now() - lastSent < 2000) return;
       lastSent = Date.now();
       busy = true;
       input.value = '';
@@ -383,6 +405,7 @@
         .then(function (t) { return post({ message: text.slice(0, 500), token: t }); })
         .then(function (r) {
           var d = r.data || {};
+          if (typeof d.admin === 'boolean') adminMode = d.admin;
           if (typeof d.remaining === 'number') remaining = d.remaining;
           if (d.done && !d.reply) remaining = 0;
           pending.className = 'msg bot' + (r.ok ? '' : ' error');
