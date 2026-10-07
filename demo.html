@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>About | Scalability Through Automation | Nepsys Technologies</title>
-  <meta name="description" content="Nepsys Technologies helps Australian small businesses grow without adding admin headcount, using automation built and run for them. Based in Sydney.">
-  <link rel="canonical" href="https://nepsys.com.au/about">
+  <title>Live Demo | Try the Missed-Call Text-Back and AI Receptionist | Nepsys Technologies</title>
+  <meta name="description" content="Try the Nepsys system yourself: call the demo line to hear the AI receptionist, or open the chat to see website lead capture in action.">
+  <link rel="canonical" href="https://nepsys.com.au/demo">
   <meta name="theme-color" content="#0a0a0a">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Nepsys Technologies">
   <meta property="og:locale" content="en_AU">
-  <meta property="og:title" content="About | Scalability Through Automation | Nepsys Technologies">
-  <meta property="og:description" content="Nepsys Technologies helps Australian small businesses grow without adding admin headcount, using automation built and run for them. Based in Sydney.">
-  <meta property="og:url" content="https://nepsys.com.au/about">
+  <meta property="og:title" content="Live Demo | Try the Missed-Call Text-Back and AI Receptionist | Nepsys Technologies">
+  <meta property="og:description" content="Try the Nepsys system yourself: call the demo line to hear the AI receptionist, or open the chat to see website lead capture in action.">
+  <meta property="og:url" content="https://nepsys.com.au/demo">
   <!-- TODO: replace with a 1200x630 social image when you have one -->
   <meta property="og:image" content="https://nepsys.com.au/assets/brand/logo.png">
   <meta name="twitter:card" content="summary">
@@ -74,8 +74,8 @@
       <nav class="nav" aria-label="Main">
           <a href="/services">Services</a>
           <a href="/how-it-works">How it works</a>
-          <a href="/demo">Demo</a>
-          <a href="/about" aria-current="page">About</a>
+          <a href="/demo" aria-current="page">Demo</a>
+          <a href="/about">About</a>
           <a class="btn btn-primary" href="/book">Book a free call</a>
       </nav>
       <button class="menu-toggle" type="button" aria-controls="mobile-nav" aria-expanded="false" aria-label="Open menu"><span></span></button>
@@ -84,8 +84,8 @@
   <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
       <a href="/services">Services</a>
       <a href="/how-it-works">How it works</a>
-      <a href="/demo">Demo</a>
-      <a href="/about" aria-current="page">About</a>
+      <a href="/demo" aria-current="page">Demo</a>
+      <a href="/about">About</a>
       <a class="btn btn-primary" href="/book">Book a free 15-minute call</a>
       <div class="mobile-contact">
         <a href="tel:+61432457880">0432 457 880</a>
@@ -97,57 +97,35 @@
 
     <section class="page-hero">
       <div class="wrap">
-        <p class="eyebrow">About</p>
-        <h1>Scalability through <em>automation</em>.</h1>
-        <p class="lede">Small businesses shouldn’t have to choose between answering the phone and doing the work.</p>
-        <div class="btn-row"><a class="btn btn-primary" href="/book">Book a free 15-minute call<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        <p class="eyebrow">Demo</p>
+        <h1>Don’t take our <em>word</em> for it.</h1>
+        <p class="lede">Try the system the way your customers would. Call it, or start a chat, and see what happens to the lead.</p>
+        
       </div>
     </section>
 
-    <section class="section on-light" aria-labelledby="why-title">
-      <div class="wrap split">
-        <div class="reveal">
-          <p class="eyebrow">Why Nepsys</p>
-          <h2 id="why-title">Grow without adding <em>admin</em>.</h2>
+    <section class="section on-light" aria-labelledby="demo-title">
+      <div class="wrap">
+        <h2 id="demo-title" class="visually-hidden">Try the demo</h2>
+        <div class="offers" style="margin-top:0">
+          <article class="contact-card reveal">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15v-3a8 8 0 0116 0v3"/><rect x="2" y="14" width="5" height="7" rx="1.5"/><rect x="17" y="14" width="5" height="7" rx="1.5"/></svg>
+            <h3>Call the demo line</h3>
+            <p class="muted">You’ll speak with our AI receptionist, an AI voice assistant, not a person. Ask it to book a job, or tell it it’s urgent and see what it does.</p>
+            <!-- DEMO PHONE SLOT: set demoPhone in js/config.js -->
+            <p data-demo-phone hidden><a href="#" style="font-size:2rem;font-family:var(--font-display)"></a></p>
+            <p data-when="no-demo-phone" class="note">The demo line isn’t public yet. Book a free call and we’ll run the demo for you live.</p>
+          </article>
+          <article class="contact-card reveal">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21l4-4M7 9h10M7 12h6"/></svg>
+            <h3>Start a chat</h3>
+            <p class="muted">Open the chat bubble in the corner of this page and send an enquiry, like a customer would. Replies may come from an AI assistant.</p>
+            <!-- DEMO CHAT SLOT: set chatWidgetId in js/config.js and the bubble appears site-wide -->
+            <p data-demo-chat hidden class="note">The chat bubble is in the bottom corner of your screen.</p>
+            <p data-when="no-demo-chat" class="note">The demo chat isn’t switched on yet. Book a free call and we’ll show it to you.</p>
+          </article>
         </div>
-        <div class="reveal">
-          <p class="lede">For most owner-operators, growth hits the same wall: more work means more calls, more quotes and more follow-ups, and the owner is the one handling all of it.</p>
-          <p class="muted">The usual answer is hiring someone for the office. That’s often the right move eventually, but it’s a big cost to carry before you know the demand is there.</p>
-          <p class="muted">We think the first step should be a system that handles the repetitive parts: answering, capturing, booking, following up and asking for reviews. Run properly, it lets a small team take on more work without the admin growing with it. That’s what we mean by scalability through automation.</p>
-          <p class="muted">Nepsys Technologies is based in Sydney. We build on GoHighLevel and run each client’s system as an ongoing service, not a one-off install.</p>
-        </div>
-      </div>
-    </section>
-
-    <!--
-      ================================================================
-      FOUNDER STORY PLACEHOLDER. Hidden until you add your story.
-      Remove the "hidden" attribute and replace the placeholder text.
-      Optional: add a photo at /assets/founder.jpg with descriptive alt text.
-      ================================================================
-    -->
-    <section class="section on-light-2" aria-labelledby="founder-title" hidden>
-      <div class="wrap split">
-        <div><p class="eyebrow">The founder</p><h2 id="founder-title">[Founder name]</h2></div>
-        <div><div class="placeholder"><strong>Placeholder</strong>Your story: why you started Nepsys, your background, and who you work with.</div></div>
-      </div>
-    </section>
-
-    <section class="section on-dark circuit" aria-labelledby="principles-title">
-      <div class="wrap split">
-        <div class="reveal">
-          <p class="eyebrow">How we work</p>
-          <h2 id="principles-title">What you can <em>expect</em>.</h2>
-        </div>
-        <div class="reveal">
-          <ul class="detail-list">
-            <li><h3>Plain English</h3><p>No jargon and no dashboards you have to decode. You get a monthly report you can read in two minutes.</p></li>
-            <li><h3>Honest about AI</h3><p>We tell callers and chat users when they’re dealing with an AI, and we’re clear with you about what it can and can’t do.</p></li>
-            <li><h3>Fair review requests</h3><p>Every customer gets the same review request. We don’t filter or gate reviews.</p></li>
-            <li><h3>Only what you need</h3><p>If the core system solves your problem, we won’t push the upgrade.</p></li>
-            <li><h3>Your consent rules</h3><p>Follow-ups only go to people who’ve enquired with you, and every message includes a way to opt out.</p></li>
-          </ul>
-        </div>
+        <p class="muted" style="margin-top:40px;max-width:46em">Demo calls and chats may be recorded and transcribed so we can improve the system. Please don’t share sensitive personal information. See our <a class="text-link" href="/privacy">Privacy Policy</a>.</p>
       </div>
     </section>
 
@@ -155,8 +133,8 @@
       <img class="bg-mark" src="/assets/brand/mark-light.png" alt="" width="217" height="494" loading="lazy">
       <div class="wrap reveal">
         <p class="eyebrow">Next step</p>
-        <h2 id="cta-title">Let’s talk about your <em>leads</em>.</h2>
-        <p class="lede">Fifteen minutes, no obligation. We’ll tell you honestly whether automation would help.</p>
+        <h2 id="cta-title">Want to see it set up for <em>your</em> business?</h2>
+        <p class="lede">On the free call we can walk through how it would work with your phone, website and calendar.</p>
         <div class="btn-row"><a class="btn btn-primary" href="/book">Book a free 15-minute call<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn btn-ghost" href="/book?type=audit">Get a free missed-call audit</a></div>
       </div>
     </section>
