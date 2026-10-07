@@ -45,7 +45,7 @@ window.NEPSYS_CONFIG = {
   /* Cloudflare Turnstile SITE key (public, safe to put here) for the chat's
    * invisible bot check. The matching SECRET key goes in the Worker only,
    * as the secret TURNSTILE_SECRET. */
-  turnstileSiteKey: '',
+  turnstileSiteKey: '0x4AAAAAAFQXXWwn4mxTd-2K',
 
   /* --------------------------------------------------------------------
    * 5. ANALYTICS — placeholder only. Nothing is loaded.

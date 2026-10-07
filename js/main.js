@@ -322,7 +322,9 @@
             sitekey: config.turnstileSiteKey,
             appearance: 'interaction-only',
             callback: function (t) { token = t; waiters.splice(0).forEach(function (fn) { fn(t); }); },
-            'expired-callback': function () { token = null; window.turnstile.reset(widgetId); }
+            'expired-callback': function () { token = null; window.turnstile.reset(widgetId); },
+            // Don't leave a message hanging if the check can't run (e.g. blocked or wrong domain).
+            'error-callback': function () { waiters.splice(0).forEach(function (fn) { fn(''); }); }
           });
           resolve(true);
         };
