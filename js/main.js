@@ -222,67 +222,185 @@
     if (select && /[?&]type=audit\b/.test(window.location.search)) select.value = 'Missed-call audit';
   }
 
-  /* ---------- Demo chat (talks to the Cloudflare Worker in config.chatApiUrl) ---------- */
+  /* ---------- Chat widget (floating button, talks to the Cloudflare Worker in config.chatApiUrl) ----------
+   * Limits shown here are for the visitor's benefit only. The Worker enforces them:
+   * 3 messages per visitor IP, bot check on every message, one request at a time, daily cap.
+   */
   function initChat() {
-    var box = document.querySelector('[data-chat]');
-    if (!box) return;
-    var offline = document.querySelectorAll('[data-when="no-chat"]');
-    var setOnline = function (on) {
-      box.hidden = !on;
-      offline.forEach(function (el) { el.hidden = on; });
-    };
-    if (!config.chatApiUrl) { setOnline(false); return; }
-    setOnline(true);
+    if (!config.chatApiUrl) return;
+    var MAX = 3;
+    var STORE = 'nepsys-chat-remaining';
+    var TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    var remaining = MAX;
+    try { var saved = parseInt(localStorage.getItem(STORE), 10); if (saved >= 0 && saved <= MAX) remaining = saved; } catch (e) {}
 
-    var log = box.querySelector('.chat-log');
-    var form = box.querySelector('.chat-form');
+    var chatIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/><path d="M8 11h8M8 14h5"/></svg>';
+    var closeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
+    var launcher = document.createElement('button');
+    launcher.type = 'button';
+    launcher.className = 'chat-launcher';
+    launcher.setAttribute('aria-controls', 'chat-panel');
+    launcher.setAttribute('aria-expanded', 'false');
+    launcher.setAttribute('aria-label', 'Chat with the Nepsys AI assistant');
+    launcher.innerHTML = chatIcon;
+
+    var panel = document.createElement('section');
+    panel.className = 'chat-panel';
+    panel.id = 'chat-panel';
+    panel.hidden = true;
+    panel.setAttribute('aria-label', 'Nepsys AI assistant chat');
+    panel.innerHTML =
+      '<div class="chat-head"><span class="chat-dot" aria-hidden="true"></span><span>Nepsys AI assistant</span>' +
+      '<button type="button" class="chat-close" aria-label="Close chat">' + closeIcon + '</button></div>' +
+      '<div class="chat-log" role="log" aria-live="polite" aria-label="Chat messages">' +
+      '<p class="msg bot">Hi, I’m Nepsys’s AI assistant, not a person. Ask me how we help businesses stop missing leads. This demo allows ' + MAX + ' messages.</p></div>' +
+      '<form class="chat-form">' +
+      '<label class="visually-hidden" for="chat-input">Your message</label>' +
+      '<input id="chat-input" name="message" maxlength="500" autocomplete="off" placeholder="Type your question" required>' +
+      '<button class="btn btn-primary" type="submit">Send</button></form>' +
+      '<div class="chat-foot"><span class="chat-left" aria-live="polite"></span>' +
+      '<a href="/privacy">Privacy</a></div>' +
+      '<div class="chat-turnstile"></div>';
+
+    document.body.appendChild(panel);
+    document.body.appendChild(launcher);
+
+    var log = panel.querySelector('.chat-log');
+    var form = panel.querySelector('.chat-form');
     var input = form.querySelector('input');
-    var button = form.querySelector('button');
-    var history = [];
+    var send = form.querySelector('button');
+    var left = panel.querySelector('.chat-left');
+    var busy = false, lastSent = 0, statusChecked = false;
 
-    var add = function (role, text) {
+    var add = function (cls, text) {
       var p = document.createElement('p');
-      p.className = 'msg ' + role;
+      p.className = 'msg ' + cls;
       p.textContent = text;
       log.appendChild(p);
       log.scrollTop = log.scrollHeight;
       return p;
     };
+    var finish = function () {
+      if (panel.querySelector('.chat-done')) return;
+      var done = document.createElement('div');
+      done.className = 'chat-done';
+      done.innerHTML = '<strong>Demo complete</strong><span>Want to see what it could do for your business?</span><a class="btn btn-primary" href="/book">Book a free call</a>';
+      log.appendChild(done);
+      log.scrollTop = log.scrollHeight;
+    };
+    var render = function () {
+      try { localStorage.setItem(STORE, String(remaining)); } catch (e) {}
+      var over = remaining <= 0;
+      input.disabled = over || busy;
+      send.disabled = over || busy;
+      input.placeholder = over ? 'Demo complete' : 'Type your question';
+      left.textContent = over ? 'Demo complete' : remaining + ' of ' + MAX + ' messages left';
+      if (over) finish();
+    };
+
+    var post = function (payload) {
+      return fetch(config.chatApiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (data) { return { ok: res.ok, data: data }; });
+      });
+    };
+
+    // Cloudflare Turnstile: an invisible bot check. Each message needs a fresh, single-use token.
+    var turnstileReady = null, widgetId = null, token = null, waiters = [];
+    var loadTurnstile = function () {
+      if (!config.turnstileSiteKey) return Promise.resolve(false);
+      if (turnstileReady) return turnstileReady;
+      turnstileReady = new Promise(function (resolve) {
+        var s = document.createElement('script');
+        s.src = TURNSTILE_SRC; s.async = true;
+        s.onload = function () {
+          widgetId = window.turnstile.render(panel.querySelector('.chat-turnstile'), {
+            sitekey: config.turnstileSiteKey,
+            appearance: 'interaction-only',
+            callback: function (t) { token = t; waiters.splice(0).forEach(function (fn) { fn(t); }); },
+            'expired-callback': function () { token = null; window.turnstile.reset(widgetId); }
+          });
+          resolve(true);
+        };
+        s.onerror = function () { resolve(false); };
+        document.head.appendChild(s);
+      });
+      return turnstileReady;
+    };
+    var getToken = function () {
+      return loadTurnstile().then(function (ok) {
+        if (!ok) return '';
+        if (token) { var t = token; token = null; return t; }
+        return new Promise(function (resolve) {
+          var timer = setTimeout(function () { resolve(''); }, 20000);
+          waiters.push(function (t) { clearTimeout(timer); token = null; resolve(t); });
+        });
+      });
+    };
+
+    var setOpen = function (open) {
+      panel.hidden = !open;
+      launcher.setAttribute('aria-expanded', String(open));
+      launcher.innerHTML = open ? closeIcon : chatIcon;
+      launcher.setAttribute('aria-label', open ? 'Close chat' : 'Chat with the Nepsys AI assistant');
+      if (!open) return;
+      loadTurnstile();
+      if (!input.disabled) input.focus();
+      if (!statusChecked) {
+        statusChecked = true;
+        post({ action: 'status' }).then(function (r) {
+          if (r.ok && typeof r.data.remaining === 'number') { remaining = r.data.remaining; render(); }
+        }).catch(function () {});
+      }
+    };
+
+    launcher.addEventListener('click', function () { setOpen(panel.hidden); });
+    panel.querySelector('.chat-close').addEventListener('click', function () { setOpen(false); launcher.focus(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !panel.hidden) { setOpen(false); launcher.focus(); }
+    });
+    document.querySelectorAll('[data-open-chat]').forEach(function (el) {
+      el.addEventListener('click', function (e) { e.preventDefault(); setOpen(true); });
+    });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var text = input.value.trim();
-      if (!text || button.disabled) return;
+      // One message at a time, a short pause between messages, and nothing after the limit.
+      if (!text || busy || remaining <= 0 || Date.now() - lastSent < 2000) return;
+      lastSent = Date.now();
+      busy = true;
       input.value = '';
       add('user', text);
-      history.push({ role: 'user', content: text });
       var pending = add('bot pending', 'Typing…');
-      button.disabled = true;
+      render();
 
-      fetch(config.chatApiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history.slice(-12) })
-      })
-        .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+      getToken()
+        .then(function (t) { return post({ message: text.slice(0, 500), token: t }); })
         .then(function (r) {
-          var reply = r.ok && r.data.reply ? r.data.reply : (r.data.error || 'Sorry, something went wrong.');
+          var d = r.data || {};
+          if (typeof d.remaining === 'number') remaining = d.remaining;
+          if (d.done && !d.reply) remaining = 0;
           pending.className = 'msg bot' + (r.ok ? '' : ' error');
-          pending.textContent = reply;
-          if (r.ok) history.push({ role: 'assistant', content: reply });
-          else history.pop();
+          pending.textContent = d.reply || d.error || 'Sorry, something went wrong.';
         })
         .catch(function () {
           pending.className = 'msg bot error';
           pending.textContent = 'The chat is unavailable right now. Please call 0432 457 880.';
-          history.pop();
         })
         .then(function () {
-          button.disabled = false;
-          log.scrollTop = log.scrollHeight;
-          input.focus();
+          busy = false;
+          if (widgetId !== null) window.turnstile.reset(widgetId);
+          render();
+          if (!input.disabled) input.focus();
         });
     });
+
+    render();
   }
 
   /* ---------- Footer year ---------- */

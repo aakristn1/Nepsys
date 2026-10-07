@@ -36,11 +36,16 @@ window.NEPSYS_CONFIG = {
   chatWidgetId: '',
 
   /* --------------------------------------------------------------------
-   * 4. DEMO CHAT (DeepSeek via Cloudflare Worker) — shown on /demo
+   * 4. CHAT WIDGET (DeepSeek via Cloudflare Worker) — floating button on every page
    * The Worker's URL. The DeepSeek API key lives in the Worker as the
    * secret DEEPSEEK_API_KEY, never here. Set to '' to switch the chat off.
    * ------------------------------------------------------------------ */
   chatApiUrl: 'https://nepsys-chat.nepsystechnologies.workers.dev',
+
+  /* Cloudflare Turnstile SITE key (public, safe to put here) for the chat's
+   * invisible bot check. The matching SECRET key goes in the Worker only,
+   * as the secret TURNSTILE_SECRET. */
+  turnstileSiteKey: '',
 
   /* --------------------------------------------------------------------
    * 5. ANALYTICS — placeholder only. Nothing is loaded.
