@@ -260,7 +260,7 @@
       '<input id="chat-input" name="message" maxlength="500" autocomplete="off" placeholder="Type your question" required>' +
       '<button class="btn btn-primary" type="submit">Send</button></form>' +
       '<div class="chat-foot"><span class="chat-disclaimer">*This demo allows for ' + MAX + ' messages</span>' +
-      '<span><span class="chat-left" aria-live="polite"></span> · <a href="/privacy">Privacy</a></span></div>' +
+      '<a href="/privacy">Privacy</a></div>' +
       '<div class="chat-turnstile"></div>';
 
     document.body.appendChild(panel);
@@ -270,7 +270,6 @@
     var form = panel.querySelector('.chat-form');
     var input = form.querySelector('input');
     var send = form.querySelector('button');
-    var left = panel.querySelector('.chat-left');
     var busy = false, lastSent = 0, statusChecked = false;
 
     var add = function (cls, text) {
@@ -295,7 +294,6 @@
       input.disabled = over || busy;
       send.disabled = over || busy;
       input.placeholder = over ? 'Demo complete' : 'Type your question';
-      left.textContent = over ? 'Demo complete' : remaining + ' of ' + MAX + ' left';
       if (over) finish();
     };
 
