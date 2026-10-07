@@ -254,13 +254,13 @@
       '<div class="chat-head"><span class="chat-dot" aria-hidden="true"></span><span>Nepsys AI assistant</span>' +
       '<button type="button" class="chat-close" aria-label="Close chat">' + closeIcon + '</button></div>' +
       '<div class="chat-log" role="log" aria-live="polite" aria-label="Chat messages">' +
-      '<p class="msg bot">Hi, I’m Nepsys’s AI assistant, not a person. Ask me how we help businesses stop missing leads. This demo allows ' + MAX + ' messages.</p></div>' +
+      '<p class="msg bot">Hi, I’m Nepsys’s AI assistant, not a person. Ask me how we help businesses stop missing leads.</p></div>' +
       '<form class="chat-form">' +
       '<label class="visually-hidden" for="chat-input">Your message</label>' +
       '<input id="chat-input" name="message" maxlength="500" autocomplete="off" placeholder="Type your question" required>' +
       '<button class="btn btn-primary" type="submit">Send</button></form>' +
-      '<div class="chat-foot"><span class="chat-left" aria-live="polite"></span>' +
-      '<a href="/privacy">Privacy</a></div>' +
+      '<div class="chat-foot"><span class="chat-disclaimer">*This demo allows for ' + MAX + ' messages</span>' +
+      '<span><span class="chat-left" aria-live="polite"></span> · <a href="/privacy">Privacy</a></span></div>' +
       '<div class="chat-turnstile"></div>';
 
     document.body.appendChild(panel);
@@ -295,7 +295,7 @@
       input.disabled = over || busy;
       send.disabled = over || busy;
       input.placeholder = over ? 'Demo complete' : 'Type your question';
-      left.textContent = over ? 'Demo complete' : remaining + ' of ' + MAX + ' messages left';
+      left.textContent = over ? 'Demo complete' : remaining + ' of ' + MAX + ' left';
       if (over) finish();
     };
 
