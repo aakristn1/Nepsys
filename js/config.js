@@ -36,7 +36,14 @@ window.NEPSYS_CONFIG = {
   chatWidgetId: '',
 
   /* --------------------------------------------------------------------
-   * 4. ANALYTICS — placeholder only. Nothing is loaded.
+   * 4. DEMO CHAT (DeepSeek via Cloudflare Worker) — shown on /demo
+   * The Worker's URL. The DeepSeek API key lives in the Worker as the
+   * secret DEEPSEEK_API_KEY, never here. Set to '' to switch the chat off.
+   * ------------------------------------------------------------------ */
+  chatApiUrl: 'https://nepsys-chat.nepsystechnologies.workers.dev',
+
+  /* --------------------------------------------------------------------
+   * 5. ANALYTICS — placeholder only. Nothing is loaded.
    * No tracking scripts are installed on this site. If you decide to add
    * one (e.g. GA4), add it deliberately and update /privacy to match.
    * ------------------------------------------------------------------ */

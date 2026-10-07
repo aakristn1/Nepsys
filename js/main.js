@@ -222,6 +222,69 @@
     if (select && /[?&]type=audit\b/.test(window.location.search)) select.value = 'Missed-call audit';
   }
 
+  /* ---------- Demo chat (talks to the Cloudflare Worker in config.chatApiUrl) ---------- */
+  function initChat() {
+    var box = document.querySelector('[data-chat]');
+    if (!box) return;
+    var offline = document.querySelectorAll('[data-when="no-chat"]');
+    var setOnline = function (on) {
+      box.hidden = !on;
+      offline.forEach(function (el) { el.hidden = on; });
+    };
+    if (!config.chatApiUrl) { setOnline(false); return; }
+    setOnline(true);
+
+    var log = box.querySelector('.chat-log');
+    var form = box.querySelector('.chat-form');
+    var input = form.querySelector('input');
+    var button = form.querySelector('button');
+    var history = [];
+
+    var add = function (role, text) {
+      var p = document.createElement('p');
+      p.className = 'msg ' + role;
+      p.textContent = text;
+      log.appendChild(p);
+      log.scrollTop = log.scrollHeight;
+      return p;
+    };
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var text = input.value.trim();
+      if (!text || button.disabled) return;
+      input.value = '';
+      add('user', text);
+      history.push({ role: 'user', content: text });
+      var pending = add('bot pending', 'Typing…');
+      button.disabled = true;
+
+      fetch(config.chatApiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history.slice(-12) })
+      })
+        .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+        .then(function (r) {
+          var reply = r.ok && r.data.reply ? r.data.reply : (r.data.error || 'Sorry, something went wrong.');
+          pending.className = 'msg bot' + (r.ok ? '' : ' error');
+          pending.textContent = reply;
+          if (r.ok) history.push({ role: 'assistant', content: reply });
+          else history.pop();
+        })
+        .catch(function () {
+          pending.className = 'msg bot error';
+          pending.textContent = 'The chat is unavailable right now. Please call 0432 457 880.';
+          history.pop();
+        })
+        .then(function () {
+          button.disabled = false;
+          log.scrollTop = log.scrollHeight;
+          input.focus();
+        });
+    });
+  }
+
   /* ---------- Footer year ---------- */
   function initYear() {
     document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
@@ -236,6 +299,7 @@
     startScrollLoop();
     initEmbeds();
     initRequestType();
+    initChat();
     initYear();
   });
 })();
