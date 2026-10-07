@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Nepsys Technologies - Premium on-site and remote tech services for Sydney homes and businesses.">
+  <meta name="keywords" content="tech support Sydney, IT services, computer repair">
+  <title>Nepsys Technologies | Tech Services Sydney</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .landing-hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #e63946 0%, #a4161a 50%, #1d3557 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .landing-content {
+      max-width: 600px;
+    }
+
+    .landing-content h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+
+    .landing-content p {
+      font-size: 1.25rem;
+      margin-bottom: 60px;
+      opacity: 0.95;
+      line-height: 1.6;
+    }
+
+    .landing-buttons {
+      display: flex;
+      gap: 20px;
+      flex-direction: column;
+    }
+
+    .landing-btn {
+      padding: 16px 40px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 300ms ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .landing-btn-individual {
+      background: white;
+      color: #e63946;
+    }
+
+    .landing-btn-individual:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .landing-btn-business {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid white;
+    }
+
+    .landing-btn-business:hover {
+      background: white;
+      color: #e63946;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .landing-content h1 {
+        font-size: 2.5rem;
+      }
+
+      .landing-content p {
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+      }
+
+      .landing-buttons {
+        gap: 15px;
+      }
+
+      .landing-btn {
+        padding: 14px 30px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="landing-hero">
+    <div class="landing-content">
+      <h1>Nepsys Technologies</h1>
+      <p>Premium tech services for Sydney homes and businesses. Professional, reliable, results-driven.</p>
+
+      <div style="margin-bottom: 40px;">
+        <p style="font-size: 1rem; margin-bottom: 30px; opacity: 0.9;">Are you a...</p>
+      </div>
+
+      <div class="landing-buttons">
+        <button class="landing-btn landing-btn-individual" onclick="selectUserType('individual')">
+          Individual
+        </button>
+        <button class="landing-btn landing-btn-business" onclick="selectUserType('business')">
+          Business
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function selectUserType(type) {
+      localStorage.setItem('userType', type);
+      window.location.href = '/services';
+    }
+  </script>
+</body>
+</html>
+

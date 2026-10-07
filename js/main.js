@@ -406,3 +406,12 @@ function initScrollAnimations() {
 
 // Uncomment to enable scroll animations
 // initScrollAnimations();
+
+/**
+ * Select user type (Individual or Business) for personalized experience
+ */
+function selectUserType(type) {
+  localStorage.setItem('userType', type);
+  window.location.href = '/services';
+}
+

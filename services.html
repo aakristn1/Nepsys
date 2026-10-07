@@ -538,8 +538,17 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Check URL parameters on page load
+    // Check localStorage for user type on page load
     document.addEventListener('DOMContentLoaded', function() {
+      const userType = localStorage.getItem('userType');
+
+      if (userType === 'business') {
+        showEnterprise();
+      } else if (userType === 'individual') {
+        showIndividual();
+      }
+
+      // Also check URL parameters as fallback
       const urlParams = new URLSearchParams(window.location.search);
       const view = urlParams.get('view');
 
